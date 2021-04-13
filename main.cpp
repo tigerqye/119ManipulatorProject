@@ -5,7 +5,7 @@ using namespace std;
 
 const double WL = 5;
 const double GRAVITY = 9.81;
-const double MAX_LENGTH = 290;
+const double MAX_LENGTH = 361;
 
 class Point {
 private:
@@ -102,11 +102,11 @@ double firstPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety())
+    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety())
+    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
@@ -125,11 +125,11 @@ double secondPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety())
+    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety())
+    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
@@ -148,11 +148,11 @@ double thirdPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety())
+    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety())
+    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
     {
         return 1000;
     }
