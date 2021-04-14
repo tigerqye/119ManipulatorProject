@@ -5,7 +5,7 @@ using namespace std;
 
 const double WL = 5;
 const double GRAVITY = 9.81;
-const double MAX_LENGTH = 361;
+const double MAX_LENGTH = 554;
 
 class Point {
 private:
@@ -38,7 +38,7 @@ public:
     }
 
     double angleOrigin()const{
-        return atan(y/x);
+        return atan2(y,x);
     }
 };
 
@@ -83,9 +83,35 @@ public:
         return length*width*GRAVITY;
     }
 
+    bool intersects(Link link0)const{
+        double a1 = end.gety() - start.gety();
+        double b1 = start.getx() - end.getx();
+        double c1 = a1*(start.getx()) + b1*(start.gety());
+
+        double a2 = link0.end.gety() - link0.start.gety();
+        double b2 = link0.start.getx() - link0.end.getx();
+        double c2 = a2*(link0.start.getx())+ b2*(link0.start.gety());
+
+        double determinant = a1*b2 - a2*b1;
+
+        double x = (b2*c1 - b1*c2)/determinant;
+        double y = (a1*c2 - a2*c1)/determinant;
+
+        Link i0 = Link(start,Point(x,y),1);
+        Link i1 = Link(Point(x,y),end,1);
+        if(abs(i0.getLength() + i1.getLength() - length) < 0.0001)
+        {
+            return true;
+        }
+        return false;
+    }
 };
 
 double getTorque(Link links[3]){
+    if(links[0].intersects(links[2]))
+    {
+        return 1000;
+    }
     return links[0].xDist()*links[0].getWeight()/2
            + (links[0].xDist() + links[1].xDist()/2)*links[1].getWeight()
            + (links[0].xDist() + links[1].xDist() + links[2].xDist()/2)*links[2].getWeight()
@@ -93,6 +119,7 @@ double getTorque(Link links[3]){
 }
 
 double firstPosition(double l1, double l2, double l3){
+
     Point end = Point(0.75,0.10);
     Point p2 = Point(0.75 - l3*cos(M_PI/3), 0.10 + l3*sin(M_PI/3));
     if(l1 + l2 < p2.distOrigin())
@@ -102,17 +129,9 @@ double firstPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
     Link links1[] = {Link(Point(0,0),p11,4), Link(p11,p2,2), Link(p2,end,1) };
     Link links2[] = {Link(Point(0,0),p12,4), Link(p12,p2,2), Link(p2,end,1) };
-    return min(getTorque(links1),getTorque(links2));
+    return min(abs(getTorque(links1)),abs(getTorque(links2)));
 }
 
 double secondPosition(double l1, double l2, double l3){
@@ -125,17 +144,9 @@ double secondPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
     Link links1[] = {Link(Point(0,0),p11,4), Link(p11,p2,2), Link(p2,end,1) };
     Link links2[] = {Link(Point(0,0),p12,4), Link(p12,p2,2), Link(p2,end,1) };
-    return min(getTorque(links1),getTorque(links2));
+    return min(abs(getTorque(links1)),abs(getTorque(links2)));
 }
 
 double thirdPosition(double l1, double l2, double l3){
@@ -148,17 +159,9 @@ double thirdPosition(double l1, double l2, double l3){
     double angle1 = acos((pow(l2,2) - pow(l1,2) - pow(p2.distOrigin(),2))/(-2*l1*p2.distOrigin()));
     Point p11 = Point(l1*cos(angle1+p2.angleOrigin()),l1*sin(angle1+p2.angleOrigin()));
     Point p12 = Point(l1*cos(p2.angleOrigin()-angle1),l1*sin(p2.angleOrigin()-angle1));
-    if(p11.getx() > p2.getx() && p11.gety() > p2.gety() && (p11.gety()-p2.gety())/(p11.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
-    if(p12.getx() > p2.getx() && p12.gety() > p2.gety() && (p12.gety()-p2.gety())/(p12.getx()-p2.getx()) <= 1)
-    {
-        return 1000;
-    }
     Link links1[] = {Link(Point(0,0),p11,4), Link(p11,p2,2), Link(p2,end,1) };
     Link links2[] = {Link(Point(0,0),p12,4), Link(p12,p2,2), Link(p2,end,1) };
-    return min(getTorque(links1),getTorque(links2));
+    return min(abs(getTorque(links1)),abs(getTorque(links2)));
 }
 
 double getTotalTorque(double t1, double t2, double t3)
@@ -180,6 +183,7 @@ double combinations(){
             if(total_torque < least && total_torque > 0)
             {
                 cout << j << " " << k << " " << i << endl;
+                cout << firstPosition(j1,k1,i1) << " " << secondPosition(j1,k1,i1) << " " << thirdPosition(j1,k1,i1) << endl;
                 least = total_torque;
             }
         }
