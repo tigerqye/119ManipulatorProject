@@ -99,7 +99,7 @@ public:
 
         Link i0 = Link(start,Point(x,y),1);
         Link i1 = Link(Point(x,y),end,1);
-        if(abs(i0.getLength() + i1.getLength() - length) < 0.0001)
+        if(abs(i0.getLength() + i1.getLength() - length) < 0.000001)
         {
             return true;
         }
@@ -169,13 +169,13 @@ double getTotalTorque(double t1, double t2, double t3)
     return sqrt(pow(t1,2) + pow(t2,2) + pow(t3,2));
 }
 
-double combinations(){
+double combinations(int length){
     double least = 1000;
-    for(int i = 1; i < MAX_LENGTH - 2; i++)
+    for(int i = 1; i < length - 2; i++)
     {
-        for(int k = 1; k < MAX_LENGTH - i - 1; k++)
+        for(int k = 1; k < length- i - 1; k++)
         {
-            int j = MAX_LENGTH - k - i;
+            int j = length - k - i;
             double j1 = j/100.0;
             double i1 = i/100.0;
             double k1 = k/100.0;
@@ -192,6 +192,16 @@ double combinations(){
 }
 
 int main() {
-    cout << combinations() << endl;
+    int length = 700;
+    double least = 10000;
+    /*for(int i = 500; i < length; i++)
+    {
+        double least1 = combinations(i);
+        if(least1 < least)
+        {
+            least = least1;
+        }
+    }*/
+    cout << combinations(559) << endl;
     return 0;
 }
